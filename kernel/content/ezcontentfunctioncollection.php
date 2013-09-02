@@ -781,6 +781,7 @@ class eZContentFunctionCollection
                                 $classid,
                                 $owner = false,
                                 $parentNodeID = false,
+                                $depth = 1,
                                 $includeDuplicates = true,
                                 $strictMatching = false )
     {
@@ -804,7 +805,21 @@ class eZContentFunctionCollection
         $alphabet = $db->escapeString( $alphabet );
 
         $sqlOwnerString = is_numeric( $owner ) ? "AND ezcontentobject.owner_id = '$owner'" : '';
-        $parentNodeIDString = is_numeric( $parentNodeID ) ? "AND ezcontentobject_tree.parent_node_id = '$parentNodeID'" : '';
+        $parentNodeIDString = '';
+        if ( is_numeric( $parentNodeID ) )
+        {
+            $depthOperator = false;
+
+            $pathStringCond     = '';
+            $notEqParentString  = '';
+            // If the node(s) doesn't exist we return null.
+            if ( !eZContentObjectTreeNode::createPathConditionAndNotEqParentSQLStrings( $pathStringCond, $notEqParentString, $parentNodeID, $depth, $depthOperator ) )
+            {
+                return null;
+            }
+          
+            $parentNodeIDString = $pathStringCond;
+        }
 
         $sqlClassIDs = '';
         if ( $classIDArray != null )
@@ -869,6 +884,7 @@ class eZContentFunctionCollection
                            $owner = false,
                            $sortBy = array(),
                            $parentNodeID = false,
+                           $depth = 1,
                            $includeDuplicates = true,
                            $strictMatching = false )
     {
@@ -974,7 +990,21 @@ class eZContentFunctionCollection
         }
 
         $sqlOwnerString = is_numeric( $owner ) ? "AND ezcontentobject.owner_id = '$owner'" : '';
-        $parentNodeIDString = is_numeric( $parentNodeID ) ? "AND ezcontentobject_tree.parent_node_id = '$parentNodeID'" : '';
+        $parentNodeIDString = '';
+        if ( is_numeric( $parentNodeID ) )
+        {
+            $depthOperator = false;
+
+            $pathStringCond     = '';
+            $notEqParentString  = '';
+            // If the node(s) doesn't exist we return null.
+            if ( !eZContentObjectTreeNode::createPathConditionAndNotEqParentSQLStrings( $pathStringCond, $notEqParentString, $parentNodeID, $depth, $depthOperator ) )
+            {
+                return null;
+            }
+          
+            $parentNodeIDString = $pathStringCond;
+        }
 
         $sqlClassIDString = '';
         if ( is_array( $classIDArray ) and count( $classIDArray ) )
