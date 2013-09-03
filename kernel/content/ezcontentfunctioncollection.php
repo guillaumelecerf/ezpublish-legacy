@@ -809,16 +809,12 @@ class eZContentFunctionCollection
         if ( is_numeric( $parentNodeID ) )
         {
             $depthOperator = false;
-
-            $pathStringCond     = '';
             $notEqParentString  = '';
             // If the node(s) doesn't exist we return null.
-            if ( !eZContentObjectTreeNode::createPathConditionAndNotEqParentSQLStrings( $pathStringCond, $notEqParentString, $parentNodeID, $depth, $depthOperator ) )
+            if ( !eZContentObjectTreeNode::createPathConditionAndNotEqParentSQLStrings( $parentNodeIDString, $notEqParentString, $parentNodeID, $depth, $depthOperator ) )
             {
                 return null;
             }
-          
-            $parentNodeIDString = $pathStringCond;
         }
 
         $sqlClassIDs = '';
@@ -994,16 +990,12 @@ class eZContentFunctionCollection
         if ( is_numeric( $parentNodeID ) )
         {
             $depthOperator = false;
-
-            $pathStringCond     = '';
             $notEqParentString  = '';
             // If the node(s) doesn't exist we return null.
-            if ( !eZContentObjectTreeNode::createPathConditionAndNotEqParentSQLStrings( $pathStringCond, $notEqParentString, $parentNodeID, $depth, $depthOperator ) )
+            if ( !eZContentObjectTreeNode::createPathConditionAndNotEqParentSQLStrings( $parentNodeIDString, $notEqParentString, $parentNodeID, $depth, $depthOperator ) )
             {
                 return null;
             }
-          
-            $parentNodeIDString = $pathStringCond;
         }
 
         $sqlClassIDString = '';
