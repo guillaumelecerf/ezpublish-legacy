@@ -781,9 +781,9 @@ class eZContentFunctionCollection
                                 $classid,
                                 $owner = false,
                                 $parentNodeID = false,
-                                $depth = 1,
                                 $includeDuplicates = true,
-                                $strictMatching = false )
+                                $strictMatching = false,
+                                $depth = 1 )
     {
         $classIDArray = array();
         if ( is_numeric( $classid ) )
@@ -808,10 +808,9 @@ class eZContentFunctionCollection
         $parentNodeIDString = '';
         if ( is_numeric( $parentNodeID ) )
         {
-            $depthOperator = false;
             $notEqParentString  = '';
             // If the node(s) doesn't exist we return null.
-            if ( !eZContentObjectTreeNode::createPathConditionAndNotEqParentSQLStrings( $parentNodeIDString, $notEqParentString, $parentNodeID, $depth, $depthOperator ) )
+            if ( !eZContentObjectTreeNode::createPathConditionAndNotEqParentSQLStrings( $parentNodeIDString, $notEqParentString, $parentNodeID, $depth ) )
             {
                 return null;
             }
@@ -846,12 +845,13 @@ class eZContentFunctionCollection
                       INNER JOIN ezcontentobject_tree ON (ezcontentobject_tree.contentobject_id = ezcontentobject.id)
                       INNER JOIN ezcontentclass ON (ezcontentclass.id = ezcontentobject.contentclass_id)
                        $sqlPermissionChecking[from]
-                  WHERE $sqlMatching
+                  WHERE 
+                  $parentNodeIDString
+                  $sqlMatching
                   $showInvisibleNodesCond
                   $sqlPermissionChecking[where]
                   $sqlClassIDs
                   $sqlOwnerString
-                  $parentNodeIDString
                   AND ezcontentclass.version = 0
                   AND ezcontentobject.status = " . eZContentObject::STATUS_PUBLISHED . "
                   AND ezcontentobject_tree.main_node_id = ezcontentobject_tree.node_id";
@@ -880,9 +880,9 @@ class eZContentFunctionCollection
                            $owner = false,
                            $sortBy = array(),
                            $parentNodeID = false,
-                           $depth = 1,
                            $includeDuplicates = true,
-                           $strictMatching = false )
+                           $strictMatching = false,
+                           $depth = 1 )
     {
         $classIDArray = array();
         if ( is_numeric( $classid ) )
@@ -989,10 +989,9 @@ class eZContentFunctionCollection
         $parentNodeIDString = '';
         if ( is_numeric( $parentNodeID ) )
         {
-            $depthOperator = false;
             $notEqParentString  = '';
             // If the node(s) doesn't exist we return null.
-            if ( !eZContentObjectTreeNode::createPathConditionAndNotEqParentSQLStrings( $parentNodeIDString, $notEqParentString, $parentNodeID, $depth, $depthOperator ) )
+            if ( !eZContentObjectTreeNode::createPathConditionAndNotEqParentSQLStrings( $parentNodeIDString, $notEqParentString, $parentNodeID, $depth ) )
             {
                 return null;
             }
@@ -1022,12 +1021,12 @@ class eZContentFunctionCollection
                        $sortingInfo[attributeFromSQL]
                        $sqlPermissionChecking[from]
                   WHERE
+                  $parentNodeIDString
                   $sqlMatching
                   $showInvisibleNodesCond
                   $sqlPermissionChecking[where]
                   $sqlClassIDString
                   $sqlOwnerString
-                  $parentNodeIDString
                   AND ezcontentclass.version = 0
                   AND ezcontentobject.status = ".eZContentObject::STATUS_PUBLISHED."
                   AND ezcontentobject_tree.main_node_id = ezcontentobject_tree.node_id
