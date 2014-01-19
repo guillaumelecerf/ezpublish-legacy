@@ -8,7 +8,7 @@ php:
 
 branches:
   only:
-    - master
+    - atomic_file_operations
 
 env:
   global:
