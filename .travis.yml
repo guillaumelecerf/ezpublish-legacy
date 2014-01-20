@@ -8,7 +8,7 @@ php:
 
 branches:
   only:
-    - master
+    - remove_includes
 
 env:
   global:
