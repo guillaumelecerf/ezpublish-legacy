@@ -858,22 +858,7 @@ class eZContentObjectTreeNode extends eZPersistentObject
             $filterClassName    = $filterINI->variable( $extendedAttributeFilterID, 'ClassName' );
             $filterMethodName   = $filterINI->variable( $extendedAttributeFilterID, 'MethodName' );
 
-            if ( $filterINI->hasVariable( $extendedAttributeFilterID, 'FileName' ) )
-            {
-                $filterFile = $filterINI->variable( $extendedAttributeFilterID, 'FileName' );
-
-                if ( $filterINI->hasVariable( $extendedAttributeFilterID, 'ExtensionName' ) )
-                {
-                    $extensionName = $filterINI->variable( $extendedAttributeFilterID, 'ExtensionName' );
-                    include_once( eZExtension::baseDirectory() . "/$extensionName/$filterFile" );
-                }
-                else
-                {
-                    include_once( $filterFile );
-                }
-            }
-
-            if ( !class_exists( $filterClassName, true ) )
+            if ( !class_exists( $filterClassName ) )
             {
                 eZDebug::writeError( "Unable to find the PHP class '$filterClassName' associated with the extended attribute filter '$extendedAttributeFilterID', the filter will be ignored", __METHOD__ );
                 return $filter;

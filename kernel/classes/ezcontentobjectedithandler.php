@@ -68,11 +68,9 @@ class eZContentObjectEditHandler
         $contentINI = eZINI::instance( 'content.ini' );
         foreach( array_unique( $contentINI->variable( 'EditSettings', 'ExtensionDirectories' ) ) as $extensionDirectory )
         {
-            $fileName = eZExtension::baseDirectory() . '/' . $extensionDirectory . '/content/' . $extensionDirectory . 'handler.php';
-            if ( file_exists( $fileName ) )
+            $className = $extensionDirectory . 'Handler';
+            if ( class_exists( $className ) )
             {
-                include_once( $fileName );
-                $className = $extensionDirectory . 'Handler';
                 $storeActionList = call_user_func_array( array( $className, 'storeActionList' ), array() );
                 foreach( $storeActionList as $storeAction )
                 {
@@ -81,7 +79,7 @@ class eZContentObjectEditHandler
             }
             else
             {
-                eZDebug::writeError( 'Cound not find content object edit handler ( defined in content.ini ) : ' . $fileName );
+                eZDebug::writeError( 'Cound not find content object edit handler ( defined in content.ini ) : ' . $className );
             }
         }
     }
@@ -96,11 +94,9 @@ class eZContentObjectEditHandler
         $contentINI = eZINI::instance( 'content.ini' );
         foreach( array_unique( $contentINI->variable( 'EditSettings', 'ExtensionDirectories' ) ) as $extensionDirectory )
         {
-            $fileName = eZExtension::baseDirectory() . '/' . $extensionDirectory . '/content/' . $extensionDirectory . 'handler.php';
-            if ( file_exists( $fileName ) )
+            $className = $extensionDirectory . 'Handler';
+            if ( class_exists( $className ) )
             {
-                include_once( $fileName );
-                $className = $extensionDirectory . 'Handler';
                 $inputHandler = new $className();
                 $functionResult = call_user_func_array( array( $inputHandler, $functionName ), $params );
                 $result[] = array( 'handler' => $className,

@@ -122,39 +122,6 @@ class eZShippingManager
             return true;
 
         $handlerName = $shopINI->variable( 'ShippingSettings', 'Handler' );
-        $repositoryDirectories = $shopINI->variable( 'ShippingSettings', 'RepositoryDirectories' );
-        $extensionDirectories = $shopINI->variable( 'ShippingSettings', 'ExtensionDirectories' );
-
-        $baseDirectory = eZExtension::baseDirectory();
-        foreach ( $extensionDirectories as $extensionDirectory )
-        {
-            $extensionPath = $baseDirectory . '/' . $extensionDirectory . '/shippinghandlers';
-            if ( file_exists( $extensionPath ) )
-                $repositoryDirectories[] = $extensionPath;
-        }
-
-        $foundHandler = false;
-        foreach ( $repositoryDirectories as $repositoryDirectory )
-        {
-            $includeFile = "$repositoryDirectory/{$handlerName}shippinghandler.php";
-
-            if ( file_exists( $includeFile ) )
-            {
-                $foundHandler = true;
-                break;
-            }
-        }
-
-        if ( !$foundHandler )
-        {
-            eZDebug::writeError( "Shipping handler '$handlerName' not found, " .
-                                   "searched in these directories: " .
-                                   implode( ', ', $repositoryDirectories ),
-                                 'eZShippingManager::loadShippingHandler' );
-            return false;
-        }
-
-        require_once( $includeFile );
         $className = $handlerName . 'ShippingHandler';
         if ( !class_exists ( $className ) )
         {
@@ -182,39 +149,6 @@ class eZShippingManager
             return true;
 
         $handlerName = $shopINI->variable( 'BasketInfoSettings', 'Handler' );
-        $repositoryDirectories = $shopINI->variable( 'BasketInfoSettings', 'RepositoryDirectories' );
-        $extensionDirectories = $shopINI->variable( 'BasketInfoSettings', 'ExtensionDirectories' );
-
-        $baseDirectory = eZExtension::baseDirectory();
-        foreach ( $extensionDirectories as $extensionDirectory )
-        {
-            $extensionPath = $baseDirectory . '/' . $extensionDirectory . '/basketinfohandlers';
-            if ( file_exists( $extensionPath ) )
-                $repositoryDirectories[] = $extensionPath;
-        }
-
-        $foundHandler = false;
-        foreach ( $repositoryDirectories as $repositoryDirectory )
-        {
-            $includeFile = "$repositoryDirectory/{$handlerName}basketinfohandler.php";
-
-            if ( file_exists( $includeFile ) )
-            {
-                $foundHandler = true;
-                break;
-            }
-        }
-
-        if ( !$foundHandler )
-        {
-            eZDebug::writeError( "Basketinfo handler '$handlerName' not found, " .
-                                   "searched in these directories: " .
-                                   implode( ', ', $repositoryDirectories ),
-                                 'eZShippingManager::loadBasketInfoHandler' );
-            return false;
-        }
-
-        require_once( $includeFile );
         $className = $handlerName . 'BasketInfoHandler';
         if ( !class_exists ( $className ) )
         {

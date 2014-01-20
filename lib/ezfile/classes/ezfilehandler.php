@@ -1022,18 +1022,23 @@ class eZFileHandler
         else if ( isset( $handlers[$identifier] ) )
         {
             $className = $handlers[$identifier];
-            $includeFile = 'lib/ezfile/classes/' . $className . '.php';
-            include_once( $includeFile );
-            $instance = new $className();
-            if ( $instance->isAvailable() )
+            if ( class_exists( $className ) )
             {
-                if ( $filename )
-                    $instance->open( $filename, $mode, $binaryFile );
+                $instance = new $className();
+                if ( $instance->isAvailable() )
+                {
+                    if ( $filename )
+                        $instance->open( $filename, $mode, $binaryFile );
+                }
+                else
+                {
+                    unset( $instance );
+                    $instance = false;
+                }
             }
             else
             {
-                unset( $instance );
-                $instance = false;
+                eZDebug::writeError( 'FileHandler $className does not exist, defaulting to eZFileHandler', __METHOD__ );
             }
         }
         return $instance;

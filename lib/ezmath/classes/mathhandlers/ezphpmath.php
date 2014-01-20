@@ -23,9 +23,8 @@ class eZPHPMath
     {
         $filename = 'lib/ezmath/classes/mathhandlers/' . $type . '.php';
 
-        if ( file_exists( $filename ) )
+        if ( class_exists( $type ) )
         {
-            include_once( $filename );
             return new $type( $params );
         }
 
