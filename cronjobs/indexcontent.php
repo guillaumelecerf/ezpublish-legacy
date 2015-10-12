@@ -29,7 +29,7 @@ $needRemoveWithUpdate = $searchEngine->needRemoveWithUpdate();
 while( true )
 {
     $entries = $db->arrayQuery(
-        "SELECT param, action FROM ezpending_actions WHERE action = 'index_object' OR action = 'index_moved_node' GROUP BY param, action ORDER BY min(created)",
+        "SELECT param, action, created FROM ezpending_actions WHERE action = 'index_object' OR action = 'index_moved_node' GROUP BY param, action ORDER BY created",
         array( 'limit' => $limit, 'offset' => $offset )
     );
 
